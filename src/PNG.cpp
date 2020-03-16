@@ -2,24 +2,36 @@
 #include "lodepng/lodepng.h"
 #include "PNG.h"
 
-PNG::PNG() {
+PNG::PNG()
+{
     width = 0;
     height = 0;
 }
 
-PNG::PNG(const char * filename) {
+PNG::PNG(const char * filename)
+{
     lodepng::decode(rawdata, width, height, filename);
 }
 
-PNG::PNG(PNG & other) {
+PNG::PNG(PNG & other)
+{
     rawdata = other.rawdata;
 }
 
-unsigned PNG::getWidth() { return width; }
-unsigned PNG::getHeight() { return height; }
+unsigned PNG::getWidth()
+{
+    return width;
+}
 
-Pixel PNG::getPixel(unsigned int x, unsigned int y) {
-    if (x < 0 || x >= width || y < 0 || y >= height) {
+unsigned PNG::getHeight()
+{
+    return height;
+}
+
+Pixel PNG::getPixel(unsigned int x, unsigned int y)
+{
+    if (x < 0 || x >= width || y < 0 || y >= height)
+    {
         cout << "ERROR GETTING PIXEL: invalid coordinates x=" << x << " y=" << y << endl;
         return Pixel();
     }
@@ -31,8 +43,10 @@ Pixel PNG::getPixel(unsigned int x, unsigned int y) {
     return p;
 }
 
-bool PNG::setPixel(unsigned int x, unsigned int y, Pixel p) {
-    if (x < 0 || x >= width || y < 0 || y >= height) {
+bool PNG::setPixel(unsigned int x, unsigned int y, Pixel p)
+{
+    if (x < 0 || x >= width || y < 0 || y >= height)
+    {
         cout << "ERROR SETTING PIXEL: invalid coordinates x=" << x << " y=" << y << endl;
         return false;
     }
@@ -43,9 +57,11 @@ bool PNG::setPixel(unsigned int x, unsigned int y, Pixel p) {
     return true;
 }
 
-bool PNG::write(const char * filename) {
+bool PNG::write(const char * filename)
+{
     unsigned error = lodepng::encode(filename, rawdata, width, height);
-    if (error) {
+    if (error)
+    {
         cout << "ERROR WRITING TO FILE: " << lodepng_error_text(error) << endl;
         return false;
     }
