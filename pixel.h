@@ -17,6 +17,9 @@ public:
 
     Pixel(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 
+    bool approximate(const Pixel & p, unsigned int eps);
+    bool operator==(const Pixel & p);
+    Pixel operator=(const Pixel & p);
 
 
 };

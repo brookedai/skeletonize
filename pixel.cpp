@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <cmath>
 #include "pixel.h"
 
@@ -92,4 +93,27 @@ Pixel::Pixel(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
     this->b = b;
     this->a = a;
     updateHSL();
+}
+
+bool Pixel::approximate(const Pixel & p, unsigned int eps) {
+    return (abs(this->r - p.r) <= eps &&
+            abs(this->g - p.g) <= eps &&
+            abs(this->b - p.b) <= eps &&
+            abs(this->a - p.a) <= eps);
+}
+
+bool Pixel::operator==(const Pixel & p) {
+    return (this->r == p.r &&
+            this->g == p.g &&
+            this->b == p.b &&
+            this->a == p.a);
+}
+
+Pixel Pixel::operator=(const Pixel & p) {
+    this->r = p.r;
+    this->g = p.g;
+    this->b = p.b;
+    this->a = p.a;
+    updateHSL();
+    return *this;
 }
