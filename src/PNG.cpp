@@ -32,7 +32,7 @@ Pixel PNG::getPixel(unsigned int x, unsigned int y)
 {
     if (x < 0 || x >= width || y < 0 || y >= height)
     {
-        cout << "ERROR GETTING PIXEL: invalid coordinates x=" << x << " y=" << y << endl;
+        cout << __FUNCTION__ << ": ERROR invalid coordinates x=" << x << " y=" << y << endl;
         return Pixel();
     }
     unsigned char r = rawdata[(x + (y * width)) * 4];
@@ -47,7 +47,7 @@ bool PNG::setPixel(unsigned int x, unsigned int y, Pixel p)
 {
     if (x < 0 || x >= width || y < 0 || y >= height)
     {
-        cout << "ERROR SETTING PIXEL: invalid coordinates x=" << x << " y=" << y << endl;
+        cout << __FUNCTION__ << ": ERROR invalid coordinates x=" << x << " y=" << y << endl;
         return false;
     }
     rawdata[(x + (y * width)) * 4] = p.r;
@@ -62,7 +62,7 @@ bool PNG::write(const char * filename)
     unsigned error = lodepng::encode(filename, rawdata, width, height);
     if (error)
     {
-        cout << "ERROR WRITING TO FILE: " << lodepng_error_text(error) << endl;
+        cout << __FUNCTION__ << ": ERROR " << lodepng_error_text(error) << endl;
         return false;
     }
     return true;
