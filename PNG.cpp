@@ -23,10 +23,10 @@ Pixel PNG::getPixel(unsigned int x, unsigned int y) {
         cout << "ERROR GETTING PIXEL: invalid coordinates x=" << x << " y=" << y << endl;
         return Pixel();
     }
-    unsigned char r = rawdata[x + (y * width)];
-    unsigned char g = rawdata[x + (y * width) + 1];
-    unsigned char b = rawdata[x + (y * width) + 2];
-    unsigned char a = rawdata[x + (y * width) + 3];
+    unsigned char r = rawdata[(x + (y * width)) * 4];
+    unsigned char g = rawdata[(x + (y * width)) * 4 + 1];
+    unsigned char b = rawdata[(x + (y * width)) * 4 + 2];
+    unsigned char a = rawdata[(x + (y * width)) * 4 + 3];
     Pixel p(r, g, b, a);
     return p;
 }
