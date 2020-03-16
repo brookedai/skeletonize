@@ -20,4 +20,4 @@ lodepng.o: lodepng/lodepng.cpp lodepng/lodepng.h
 	$(CXX) $(CXXFLAGS) -c lodepng/lodepng.cpp
 
 clean:
-	rm -rf *.o skeleton out/*
+	rm -rf *.o skeleton ../out/*
