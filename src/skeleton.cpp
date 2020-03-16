@@ -6,8 +6,8 @@ using namespace std;
 
 int main() {
     cout << "Hello World!" << endl;
-    const char *filein = "images/apple.png";
-    const char *fileout = "out/apple.png";
+    const char *filein = "../images/apple.png";
+    const char *fileout = "../out/apple.png";
 
     PNG img(filein);
 
