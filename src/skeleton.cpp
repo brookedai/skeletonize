@@ -7,10 +7,9 @@ using namespace std;
 
 unsigned int getPixelDistance (unsigned int x,
                                unsigned int y,
-                               vector<vector<unsigned int>> & distance_map,
-                               PNG & img)
+                               vector<vector<unsigned int>> & distance_map)
 {
-    if (x < 0 || x >= img.getWidth() || y < 0 || y >= img.getHeight())
+    if (y < 0 || y >= distance_map.size() || x < 0 || x >= distance_map[0].size())
     {
         return 0;
     }
@@ -20,82 +19,118 @@ unsigned int getPixelDistance (unsigned int x,
 void setPixelDistance (unsigned int x,
                        unsigned int y,
                        unsigned int distVal,
-                       vector<vector<unsigned int>> & distance_map,
-                       PNG & img)
+                       vector<vector<unsigned int>> & distance_map)
 {
-    if (x < 0 || x >= img.getWidth() || y < 0 || y >= img.getHeight())
+    if (y < 0 || y >= distance_map.size() || x < 0 || x >= distance_map[0].size())
     {
         cout << __FUNCTION__ << ": ERROR could not set pixel distance at x=" << x << " y=" << y << endl;
     }
     distance_map[y][x] = distVal;
 }
 
-int main () {
-    cout << "Hello World!" << endl;
-    const char *filein = "../images/apple.png";
-    const char *fileout = "../out/apple.png";
+void getDistanceMap (vector<vector<unsigned int>> & distance_map, PNG & img)
+{
+    distance_map = vector<vector<unsigned int>>(img.getHeight(), vector<unsigned int>(img.getWidth()));
 
-    PNG img(filein);
-
-    vector<vector<unsigned int>> distance_map(img.getHeight(), vector<unsigned int>(img.getWidth()));
-    vector<vector<unsigned int>> test(img.getHeight(), vector<unsigned int>(img.getWidth()));
-
-    for (int y = 0; y < img.getHeight(); y++) {
-        for (int x = 0; x < img.getWidth(); x++) {
-            // cout << "forward: " << x << "," << y << endl;
-            if (img.getPixel(x, y).approximate(Pixel(0,0,0,255), 100)) {
-                unsigned int minNWDist = min(getPixelDistance(x-1, y, distance_map, img) + 1,
-                                             getPixelDistance(x, y-1, distance_map, img) + 1);
-                setPixelDistance(x, y, minNWDist, distance_map, img);
-                setPixelDistance(x, y, 1, test, img);
+    // start from top-left corner, moving right and down
+    for (int y = 0; y < img.getHeight(); y++)
+    {
+        for (int x = 0; x < img.getWidth(); x++)
+        {
+            if (img.getPixel(x, y).approximate(Pixel(0,0,0,255), 100))
+            {
+                unsigned int minTLDist = min(getPixelDistance(x-1, y, distance_map) + 1,
+                                             getPixelDistance(x, y-1, distance_map) + 1);
+                setPixelDistance(x, y, minTLDist, distance_map);
                 Pixel p(100, 30, 60, 255);
                 img.setPixel(x, y, p);
             }
         }
     }
 
-    // for (int y = 0; y < img.getHeight(); y++) {
-    //     for (int x = 0; x < img.getWidth(); x++) {
-    //         if (distance_map[y][x]) cout << distance_map[y][x];
-    //         else cout << " ";
-    //         cout << ((distance_map[y][x]/100)?" ":(distance_map[y][x]/10)?"  ":"   ");
-    //     }
-    //     cout << endl;
-    // }
-
-    for (int y = img.getHeight()-1; y >= 0; y--) {
-        for (int x = img.getWidth()-1; x >= 0; x--) {
-            // cout << "backward: " << x << "," << y << endl;
-            if (img.getPixel(x, y).approximate(Pixel(100, 30, 60, 255), 100)) {
-                unsigned int minSEDist = min(getPixelDistance(x+1, y, distance_map, img) + 1,
-                                             min(getPixelDistance(x, y+1, distance_map, img) + 1,
+    // start from bottom-right corner, moving left and up
+    for (int y = img.getHeight()-1; y >= 0; y--)
+    {
+        for (int x = img.getWidth()-1; x >= 0; x--)
+        {
+            if (img.getPixel(x, y).approximate(Pixel(100, 30, 60, 255), 100))
+            {
+                unsigned int minBRDist = min(getPixelDistance(x+1, y, distance_map) + 1,
+                                             min(getPixelDistance(x, y+1, distance_map) + 1,
                                                  distance_map[y][x]));
-                setPixelDistance(x, y, minSEDist, distance_map, img);
-                setPixelDistance(x, y, 1, test, img);
+                setPixelDistance(x, y, minBRDist, distance_map);
                 Pixel p(30, 30, 160, 255);
                 img.setPixel(x, y, p);
             }
         }
-        // string tmpfile = "../out/apple";
-        // tmpfile += to_string(y).c_str();
-        // tmpfile += ".png";
-        // img.write(tmpfile.c_str());
     }
 
-    for (int y = 0; y < img.getHeight(); y++) {
-        for (int x = 0; x < img.getWidth(); x++) {
-            // if (distance_map[y][x])
-            cout << distance_map[y][x];
-            // else
-            // cout << " ";
-            cout << ((distance_map[y][x]/100)?" ":(distance_map[y][x]/10)?"  ":"   ");
+}
+
+void getLocalMaxes (vector<vector<unsigned int>> & distance_map,
+                    vector<vector<unsigned int>> & local_maxes)
+{
+    local_maxes = vector<vector<unsigned int>>(distance_map.size(), vector<unsigned int>(distance_map[0].size()));
+    for (int y = 0; y < distance_map.size(); y++)
+    {
+        for (int x = 0; x < distance_map[y].size(); x++)
+        {
+            if (distance_map[y][x] >= getPixelDistance(x+1,   y, distance_map) &&
+                distance_map[y][x] >= getPixelDistance(x+1, y-1, distance_map) &&
+                distance_map[y][x] >= getPixelDistance(  x, y-1, distance_map) &&
+                distance_map[y][x] >= getPixelDistance(x-1, y-1, distance_map) &&
+                distance_map[y][x] >= getPixelDistance(x-1,   y, distance_map) &&
+                distance_map[y][x] >= getPixelDistance(x-1, y+1, distance_map) &&
+                distance_map[y][x] >= getPixelDistance(  x, y+1, distance_map) &&
+                distance_map[y][x] >= getPixelDistance(x+1, y+1, distance_map))
+            {
+                local_maxes[y][x] = 1;
+            }
         }
         cout << endl;
     }
+}
 
+void printDistanceMap (vector<vector<unsigned int>> distance_map)
+{
+    for (int y = 0; y < distance_map.size(); y++)
+    {
+        for (int x = 0; x < distance_map[y].size(); x++)
+        {
+            if (distance_map[y][x]) cout << distance_map[y][x];
+            else cout << " ";
+            cout  << ((distance_map[y][x] / 100) ? " "  :
+                                           (distance_map[y][x] /  10) ? "  " :
+                                                                        "   ");
+        // cout << distance_map[y][x] << ((distance_map[y][x] / 100) ? " "  :
+        //                                (distance_map[y][x] /  10) ? "  " :
+        //                                                             "   ");
+        }
+        cout << endl;
+    }
+}
 
-    img.write(fileout);
+int main () {
+    cout << "Hello World!" << endl;
 
+    vector<const char *> filesin = {"../images/apple.png", "../images/batman.png", "../images/discord.png"};
+    vector<const char *> filesout = {"../out/apple.png", "../out/batman.png", "../out/discord.png"};
+
+    for (int i = 0; i < filesin.size(); i++) {
+        PNG img(filesin[i]);
+        PNG skeleton(filesin[i]);
+
+        vector<vector<unsigned int>> distance_map;
+        getDistanceMap(distance_map, img);
+
+        vector<vector<unsigned int>> local_maxes;
+        getLocalMaxes(distance_map, local_maxes);
+
+        printDistanceMap(distance_map);
+        printDistanceMap(local_maxes);
+
+        img.write(filesout[i]);
+    }
 
     return 0;
 }

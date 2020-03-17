@@ -1,3 +1,4 @@
 skeleton
 *.o
 out/*
+tmp.txt
