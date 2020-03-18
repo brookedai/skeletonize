@@ -13,6 +13,13 @@ PNG::PNG(const char * filename)
     lodepng::decode(rawdata, width, height, filename);
 }
 
+PNG::PNG(unsigned int width, unsigned int height)
+{
+    rawdata = vector<unsigned char>(width * height * 4, 255);
+    this->width = width;
+    this->height = height;
+}
+
 PNG::PNG(PNG & other)
 {
     rawdata = other.rawdata;
