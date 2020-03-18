@@ -119,6 +119,14 @@ bool Pixel::operator==(const Pixel & p)
             this->a == p.a);
 }
 
+bool Pixel::operator!=(const Pixel & p)
+{
+    return (this->r != p.r ||
+            this->g != p.g ||
+            this->b != p.b ||
+            this->a != p.a);
+}
+
 Pixel Pixel::operator=(const Pixel & p)
 {
     this->r = p.r;
