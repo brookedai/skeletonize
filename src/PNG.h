@@ -18,6 +18,8 @@ public:
 
     PNG(const char * filename);
 
+    PNG(unsigned int width, unsigned int height);
+
     PNG(PNG & other);
 
     unsigned getWidth();

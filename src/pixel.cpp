@@ -4,7 +4,8 @@
 
 using namespace std;
 
-Pixel::Pixel() {
+Pixel::Pixel()
+{
     h = 0;
     s = 0;
     l = 0;
@@ -16,7 +17,8 @@ Pixel::Pixel() {
 }
 
 // https://www.rapidtables.com/convert/color/hsl-to-rgb.html
-void Pixel::updateRGB() {
+void Pixel::updateRGB()
+{
     double c = (1 - abs(2 * l - 1)) * s;
     double x = c * (1 - abs(fmod(h / 60, 2) - 1));
     double m = l - c / 2;
@@ -54,7 +56,8 @@ void Pixel::updateRGB() {
 }
 
 // https://www.rapidtables.com/convert/color/rgb-to-hsl.html
-void Pixel::updateHSL() {
+void Pixel::updateHSL()
+{
     double rprime = ((double)r)/255;
     double gprime = ((double)g)/255;
     double bprime = ((double)b)/255;
@@ -65,10 +68,13 @@ void Pixel::updateHSL() {
 
     l = (cmax + cmin) / 2;
 
-    if (delt < 0.0001) {
+    if (delt < 0.0001)
+    {
         h = 0;
         s = 0;
-    } else {
+    }
+    else
+    {
         s = delt / (1 - abs(2 * l - 1));
         if (cmax == rprime) {
             h = 60 * fmod((gprime - bprime) / delt, 6);
@@ -80,14 +86,16 @@ void Pixel::updateHSL() {
     }
 }
 
-Pixel::Pixel(double h, double s, double l) {
+Pixel::Pixel(double h, double s, double l)
+{
     this->h = h;
     this->s = s;
     this->l = l;
     updateRGB();
 }
 
-Pixel::Pixel(unsigned char r, unsigned char g, unsigned char b, unsigned char a) {
+Pixel::Pixel(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+{
     this->r = r;
     this->g = g;
     this->b = b;
@@ -95,21 +103,32 @@ Pixel::Pixel(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
     updateHSL();
 }
 
-bool Pixel::approximate(const Pixel & p, unsigned int eps) {
+bool Pixel::approximate(const Pixel & p, unsigned int eps)
+{
     return (abs(this->r - p.r) <= eps &&
             abs(this->g - p.g) <= eps &&
             abs(this->b - p.b) <= eps &&
             abs(this->a - p.a) <= eps);
 }
 
-bool Pixel::operator==(const Pixel & p) {
+bool Pixel::operator==(const Pixel & p)
+{
     return (this->r == p.r &&
             this->g == p.g &&
             this->b == p.b &&
             this->a == p.a);
 }
 
-Pixel Pixel::operator=(const Pixel & p) {
+bool Pixel::operator!=(const Pixel & p)
+{
+    return (this->r != p.r ||
+            this->g != p.g ||
+            this->b != p.b ||
+            this->a != p.a);
+}
+
+Pixel Pixel::operator=(const Pixel & p)
+{
     this->r = p.r;
     this->g = p.g;
     this->b = p.b;
