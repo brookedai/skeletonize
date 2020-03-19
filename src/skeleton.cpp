@@ -190,8 +190,8 @@ void printDistanceMap (vector<vector<unsigned int>> & distance_map)
 int main () {
     cout << "Hello World!" << endl;
 
-    vector<const char *> filesin = {"../images/apple.png", "../images/batman.png", "../images/discord.png", "../images/cursive.png"};
-    vector<const char *> filesout = {"../out/apple.png", "../out/batman.png", "../out/discord.png", "../out/cursive.png"};
+    vector<const char *> filesin = {"../images/apple.png", "../images/batman.png", "../images/discord.png", "../images/cursive.png", "../images/rose.png", "../images/hansolo.png"};
+    vector<const char *> filesout = {"../out/apple.png", "../out/batman.png", "../out/discord.png", "../out/cursive.png", "../out/rose.png", "../out/hansolo.png"};
 
     for (int i = 0; i < filesin.size(); i++)
     {
