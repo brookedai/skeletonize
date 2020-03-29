@@ -2,10 +2,13 @@ CXX = g++
 CXXFLAGS = -std=c++17 -Wall -g
 
 EXENAME = skeleton
-OBJS = skeleton.o PNG.o pixel.o lodepng.o
+OBJS = main.o skeleton.o PNG.o pixel.o lodepng.o
 
 $(EXENAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(EXENAME)
+
+main.o: main.cpp skeleton.h
+	$(CXX) $(CXXFLAGS) -c main.cpp
 
 skeleton.o: skeleton.cpp PNG.h
 	$(CXX) $(CXXFLAGS) -c skeleton.cpp

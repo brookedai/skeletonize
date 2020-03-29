@@ -22,7 +22,9 @@ PNG::PNG(unsigned int width, unsigned int height)
 
 PNG::PNG(PNG & other)
 {
-    rawdata = other.rawdata;
+    this->rawdata = other.rawdata;
+    this->width = other.width;
+    this->height = other.height;
 }
 
 unsigned PNG::getWidth()
