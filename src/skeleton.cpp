@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <queue>
+#include <algorithm>
 #include "skeleton.h"
 
 #define abs(x) ((x) >= 0 ? (x) : (-x))
