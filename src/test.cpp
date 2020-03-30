@@ -61,6 +61,8 @@ int main() {
 
     solveProblem();
 
+    PNG recreated = skeleton.getRecreatedImage();
+
     // verifying the produced image
     for (int y = 0; y < img.size(); y++) {
         for (int x = 0; x < img[y].size(); x++) {

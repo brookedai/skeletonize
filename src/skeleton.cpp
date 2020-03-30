@@ -127,14 +127,6 @@ void Skeleton::calculateDistanceMap ()
     }
 }
 
-// labels for the candidate ridge points
-enum prominency {
-    NONE,
-    WEAK,
-    GOOD,
-    STRONG
-};
-
 /*
     Helper function to calculate the transition values between points,
     eg. We have two pixels | 1 | 2 | and we are scanning in the x direction.
@@ -145,8 +137,8 @@ enum prominency {
     @param scanX The scan map for the scan line going in the x direction
     @param scanY The scan map for the scan line going in the y direction
 */
-static void calculateScanMap (vector<vector<int>> &scanX,
-                              vector<vector<int>> &scanY)
+void Skeleton::calculateScanMap (vector<vector<int>> &scanX,
+                                 vector<vector<int>> &scanY)
 {
     for (int y = 0; y < this->distance_map.size(); y++)
     {
@@ -171,9 +163,9 @@ static void calculateScanMap (vector<vector<int>> &scanX,
 
 
 */
-static void labelCandidates (vector<vector<int>> &scanX,
-                             vector<vector<int>> &scanY,
-                             vector<vector<prominency>> &ridge_prominency)
+void Skeleton::labelCandidates (vector<vector<int>> &scanX,
+                                vector<vector<int>> &scanY,
+                                vector<vector<prominency>> &ridge_prominency)
 {
     // the STRONG labelling for scanX, as well as the GOOD and WEAK labelling
     // for both scanX and scanY, are done in this double for loop.
@@ -254,8 +246,8 @@ static void labelCandidates (vector<vector<int>> &scanX,
     @param ridge_prominency The label values for each point
     @param visited The points already considered for the skeleton
 */
-static void ridgePointsFirstPass (vector<vector<prominency>> &ridge_prominency,
-                                  vector<vector<bool>> &visited)
+void Skeleton::ridgePointsFirstPass (vector<vector<prominency>> &ridge_prominency,
+                                     vector<vector<bool>> &visited)
 {
     for (int y = 0; y < ridge_prominency.size(); y++)
     {
@@ -279,8 +271,8 @@ static void ridgePointsFirstPass (vector<vector<prominency>> &ridge_prominency,
 
     WARNING: this function is a monstrosity.
 */
-static void ridgePointsSecondPass (vector<vector<prominency>> &ridge_prominency,
-                                   vector<vector<bool>> &visited)
+void Skeleton::ridgePointsSecondPass (vector<vector<prominency>> &ridge_prominency,
+                                      vector<vector<bool>> &visited)
 {
     // iterate through all points to find the points already in the skeleton
     for (int y = 0; y < ridge_prominency.size(); y++)

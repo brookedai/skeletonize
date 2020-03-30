@@ -6,6 +6,14 @@
 
 using namespace std;
 
+// labels for the candidate ridge points
+enum prominency {
+    NONE,
+    WEAK,
+    GOOD,
+    STRONG
+};
+
 class Skeleton {
 private:
     PNG img;
@@ -23,6 +31,18 @@ private:
     void getBinaryImage (PNG & img);
 
     void calculateDistanceMap ();
+
+    void calculateScanMap (vector<vector<int>> &scanX, vector<vector<int>> &scanY);
+
+    void labelCandidates (vector<vector<int>> &scanX,
+                          vector<vector<int>> &scanY,
+                          vector<vector<prominency>> &ridge_prominency);
+
+    void ridgePointsFirstPass (vector<vector<prominency>> &ridge_prominency,
+                               vector<vector<bool>> &visited);
+
+    void ridgePointsSecondPass (vector<vector<prominency>> &ridge_prominency,
+                                vector<vector<bool>> &visited);
 
     void calculateRidgePoints ();
 

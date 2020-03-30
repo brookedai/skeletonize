@@ -6,6 +6,8 @@ EXENAME = skeleton
 TESTOBJS = test.o skeleton.o PNG.o pixel.o lodepng.o
 OBJS = main.o skeleton.o PNG.o pixel.o lodepng.o
 
+all: $(TESTEXENAME) $(EXENAME)
+
 $(TESTEXENAME): $(TESTOBJS)
 	$(CXX) $(CXXFLAGS) $(TESTOBJS) -o $(TESTEXENAME)
 
