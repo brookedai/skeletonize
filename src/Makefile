@@ -1,11 +1,19 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -g
 
+TESTEXENAME = test
 EXENAME = skeleton
+TESTOBJS = test.o skeleton.o PNG.o pixel.o lodepng.o
 OBJS = main.o skeleton.o PNG.o pixel.o lodepng.o
+
+$(TESTEXENAME): $(TESTOBJS)
+	$(CXX) $(CXXFLAGS) $(TESTOBJS) -o $(TESTEXENAME)
 
 $(EXENAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(EXENAME)
+
+test.o: test.cpp skeleton.h
+	$(CXX) $(CXXFLAGS) -c test.cpp
 
 main.o: main.cpp skeleton.h
 	$(CXX) $(CXXFLAGS) -c main.cpp
@@ -23,4 +31,4 @@ lodepng.o: lodepng/lodepng.cpp lodepng/lodepng.h
 	$(CXX) $(CXXFLAGS) -c lodepng/lodepng.cpp
 
 clean:
-	rm -rf *.o skeleton ../out/*
+	rm -rf *.o skeleton test ../out/*
